@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
+      <div class="clock-center"></div>
+    </div>
+  </div>
+
+<script>
+  function getCurrentDegrees() {
+    const now = new Date();
+    const second = now.getSeconds();
+    const minute = now.getMinutes();
+    const hour = now.getHours();
+    return {
+      second: second * 6 ,
+      minute: minute * 6,
+      hour: (hour % 12) * 30 + minute/2,
+    };
+  }
+
+  /** transfrom rotate with degree on element with specified class name */
+  function rotate(name, degree) {
+    const element = document.querySelector(name);
+    element.style.transform = `rotate(${degree}deg)`;
+    // fix animation bounce back
+    if (degree === 0) {
+      element.style.transition = 'all 0s';
+    }
+  }
+
+  function setClock() {
+    const {second, minute, hour} = getCurrentDegrees();
+    rotate('.second-hand', second);
+    rotate('.min-hand', minute);
+    rotate('.hour-hand', hour);
+  }
+  
+  setInterval(setClock, 1000);
+</script>
+</body>
+</html>

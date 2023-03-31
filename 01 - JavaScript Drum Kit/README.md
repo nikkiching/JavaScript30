@@ -11,6 +11,7 @@ Use keyboard or simply click on the button and play your own music!
   - `element.classList.remove('xxx')`
 
 ## Misc
+- HTML `data-*` Attribute: The data-* attribute gives us the ability to embed extra information on all HTML elements
 - audio element
   - reset time: `audio.currentTime = 0`
 - css
