@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+let places = [];
+
+fetch(endpoint).then(async (response) => {
+  const data = await response.json();
+  places = data;
+});
+
+function filterMatches(word, places) {
+  const regex = new RegExp(word, 'gi');
+  return places.filter(place => {
+    return place.city.match(regex) || place.state.match(regex);
+  });
+}
+function displayMatches() {
+  const matches = filterMatches(this.value, places);
+  const regex = new RegExp(this.value, 'gi');
+  const html = matches.map(place => {
+    const {city, state, population} = place;
+    const name = `${city}, ${state}`.replace(regex, `<span class="hl">${this.value}</span>`);
+    const count = parseInt(population).toLocaleString('en-US');
+    return `
+      <li>
+        <span class="name">${name}</span>
+        <span class="population">${count}</span>
+      </li>
+    `;
+  }).join('');
+  suggestions.innerHTML = html;
+}
+
+const searchInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+searchInput.addEventListener('change', displayMatches)
+searchInput.addEventListener('keyup', displayMatches)
+
+</script>
+</body>
+</html>
